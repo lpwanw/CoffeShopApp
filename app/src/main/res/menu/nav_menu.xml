@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <group android:checkableBehavior="single">
+        
+        <!-- Menu chính -->
+        <item
+            android:id="@+id/nav_so_do_ban"
+            android:icon="@android:drawable/ic_menu_mapmode"
+            android:title="Sơ Đồ Bàn" />
+        
+        <!-- Menu chung cho tất cả -->
+        <item
+            android:id="@+id/nav_dat_hang"
+            android:icon="@android:drawable/ic_menu_add"
+            android:title="Đặt Hàng" />
+            
+        <item
+            android:id="@+id/nav_lich_su_don_hang"
+            android:icon="@android:drawable/ic_menu_recent_history"
+            android:title="Lịch Sử Đơn Hàng" />
+            
+        <!-- Menu chỉ dành cho Admin -->
+        <item
+            android:id="@+id/nav_quan_ly_san_pham"
+            android:icon="@android:drawable/ic_menu_edit"
+            android:title="Quản Lý Sản Phẩm"
+            android:visible="false" />
+            
+        <item
+            android:id="@+id/nav_quan_ly_nguoi_dung"
+            android:icon="@android:drawable/ic_menu_manage"
+            android:title="Quản Lý Người Dùng"
+            android:visible="false" />
+            
+        <item
+            android:id="@+id/nav_quan_ly_ban"
+            android:icon="@android:drawable/ic_menu_sort_by_size"
+            android:title="Quản Lý Bàn"
+            android:visible="false" />
+            
+        <item
+            android:id="@+id/nav_bao_cao"
+            android:icon="@android:drawable/ic_menu_view"
+            android:title="Báo Cáo"
+            android:visible="false" />
+    </group>
+    
+    <item android:title="Tài khoản">
+        <menu>
+            <item
+                android:id="@+id/nav_dang_xuat"
+                android:icon="@android:drawable/ic_menu_close_clear_cancel"
+                android:title="Đăng Xuất" />
+        </menu>
+    </item>
+    
+</menu>

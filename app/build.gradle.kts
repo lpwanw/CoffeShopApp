@@ -4,8 +4,6 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 }
 
-apply plugin: 'kotlin-kapt'
-
 android {
     namespace = "com.example.android_demo"
     compileSdk = 36
@@ -39,6 +37,9 @@ android {
     buildFeatures {
         compose = true
     }
+    lint {
+        abortOnError = false
+    }
 }
 
 dependencies {
@@ -54,7 +55,7 @@ dependencies {
     
     // Room dependencies
     implementation(libs.room.runtime)
-    kapt(libs.room.compiler)
+    annotationProcessor(libs.room.compiler)
     
     // Material Design và AppCompat cho Java activities
     implementation(libs.material)

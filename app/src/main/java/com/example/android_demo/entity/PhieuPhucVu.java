@@ -5,42 +5,39 @@ import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 import java.util.Date;
 
-@Entity(tableName = "don_hang",
+@Entity(tableName = "phieu_phuc_vu",
         foreignKeys = {
-                @ForeignKey(entity = NguoiDung.class,
-                        parentColumns = "id",
-                        childColumns = "nguoiDungId",
-                        onDelete = ForeignKey.CASCADE),
                 @ForeignKey(entity = Ban.class,
                         parentColumns = "id",
                         childColumns = "banId",
                         onDelete = ForeignKey.CASCADE),
-                @ForeignKey(entity = PhieuPhucVu.class,
+                @ForeignKey(entity = NguoiDung.class,
                         parentColumns = "id",
-                        childColumns = "phieuPhucVuId",
+                        childColumns = "nguoiDungId",
                         onDelete = ForeignKey.CASCADE)
         })
-public class DonHang {
+public class PhieuPhucVu {
     @PrimaryKey(autoGenerate = true)
     private int id;
     
-    private int nguoiDungId;
     private int banId;
-    private int phieuPhucVuId;
-    private Date thoiGianDat;
+    private int nguoiDungId;
+    private Date thoiGianBatDau;
+    private Date thoiGianKetThuc;
     private double tongTien;
-    private String trangThai; // "DANG_CHO", "DANG_CHE_BIEN", "HOAN_THANH", "HUY"
+    private String trangThai; // "DANG_PHUC_VU", "HOAN_THANH", "HUY"
     private String ghiChu;
+    private int soKhach;
 
-    public DonHang() {}
+    public PhieuPhucVu() {}
 
-    public DonHang(int nguoiDungId, int banId, int phieuPhucVuId, Date thoiGianDat, double tongTien, String trangThai) {
-        this.nguoiDungId = nguoiDungId;
+    public PhieuPhucVu(int banId, int nguoiDungId, Date thoiGianBatDau, String trangThai, int soKhach) {
         this.banId = banId;
-        this.phieuPhucVuId = phieuPhucVuId;
-        this.thoiGianDat = thoiGianDat;
-        this.tongTien = tongTien;
+        this.nguoiDungId = nguoiDungId;
+        this.thoiGianBatDau = thoiGianBatDau;
         this.trangThai = trangThai;
+        this.soKhach = soKhach;
+        this.tongTien = 0;
     }
 
     public int getId() {
@@ -51,14 +48,6 @@ public class DonHang {
         this.id = id;
     }
 
-    public int getNguoiDungId() {
-        return nguoiDungId;
-    }
-
-    public void setNguoiDungId(int nguoiDungId) {
-        this.nguoiDungId = nguoiDungId;
-    }
-
     public int getBanId() {
         return banId;
     }
@@ -67,20 +56,28 @@ public class DonHang {
         this.banId = banId;
     }
 
-    public int getPhieuPhucVuId() {
-        return phieuPhucVuId;
+    public int getNguoiDungId() {
+        return nguoiDungId;
     }
 
-    public void setPhieuPhucVuId(int phieuPhucVuId) {
-        this.phieuPhucVuId = phieuPhucVuId;
+    public void setNguoiDungId(int nguoiDungId) {
+        this.nguoiDungId = nguoiDungId;
     }
 
-    public Date getThoiGianDat() {
-        return thoiGianDat;
+    public Date getThoiGianBatDau() {
+        return thoiGianBatDau;
     }
 
-    public void setThoiGianDat(Date thoiGianDat) {
-        this.thoiGianDat = thoiGianDat;
+    public void setThoiGianBatDau(Date thoiGianBatDau) {
+        this.thoiGianBatDau = thoiGianBatDau;
+    }
+
+    public Date getThoiGianKetThuc() {
+        return thoiGianKetThuc;
+    }
+
+    public void setThoiGianKetThuc(Date thoiGianKetThuc) {
+        this.thoiGianKetThuc = thoiGianKetThuc;
     }
 
     public double getTongTien() {
@@ -105,5 +102,13 @@ public class DonHang {
 
     public void setGhiChu(String ghiChu) {
         this.ghiChu = ghiChu;
+    }
+
+    public int getSoKhach() {
+        return soKhach;
+    }
+
+    public void setSoKhach(int soKhach) {
+        this.soKhach = soKhach;
     }
 }
