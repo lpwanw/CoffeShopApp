@@ -91,16 +91,28 @@ public class DatHangFragment extends Fragment
     }
     
     private void taiDanhSachSanPham() {
-        danhSachSanPham = database.sanPhamDao().laySanPhamConHang();
-        sanPhamAdapter.capNhatDanhSach(danhSachSanPham);
-        
-        if (danhSachSanPham.isEmpty()) {
-            tvKhongCoSanPham.setVisibility(View.VISIBLE);
-            rvSanPhamDatHang.setVisibility(View.GONE);
-        } else {
-            tvKhongCoSanPham.setVisibility(View.GONE);
-            rvSanPhamDatHang.setVisibility(View.VISIBLE);
-        }
+        new Thread(() -> {
+            try {
+                List<SanPham> danhSach = database.sanPhamDao().laySanPhamConHang();
+                
+                getActivity().runOnUiThread(() -> {
+                    danhSachSanPham = danhSach;
+                    sanPhamAdapter.capNhatDanhSach(danhSachSanPham);
+                    
+                    if (danhSachSanPham.isEmpty()) {
+                        tvKhongCoSanPham.setVisibility(View.VISIBLE);
+                        rvSanPhamDatHang.setVisibility(View.GONE);
+                    } else {
+                        tvKhongCoSanPham.setVisibility(View.GONE);
+                        rvSanPhamDatHang.setVisibility(View.VISIBLE);
+                    }
+                });
+            } catch (Exception e) {
+                getActivity().runOnUiThread(() -> 
+                    Toast.makeText(getContext(), "Lỗi khi tải danh sách sản phẩm: " + e.getMessage(), Toast.LENGTH_SHORT).show()
+                );
+            }
+        }).start();
     }
     
     @Override
@@ -178,42 +190,59 @@ public class DatHangFragment extends Fragment
     }
     
     private void taoDonHang() {
-        try {
-            // Lấy thông tin người dùng
-            SharedPreferences sharedPreferences = getContext().getSharedPreferences("QuanCaPhe", MODE_PRIVATE);
-            int nguoiDungId = sharedPreferences.getInt("nguoi_dung_id", -1);
-            
-            if (nguoiDungId == -1) {
-                Toast.makeText(getContext(), "Lỗi: Không tìm thấy thông tin người dùng", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            
-            // Tạo đơn hàng (sử dụng constructor mới với banId và phieuPhucVuId)
-            DonHang donHang = new DonHang(nguoiDungId, 0, 0, new Date(), tongTien, "DANG_CHO");
-            long donHangId = database.donHangDao().themDonHang(donHang);
-            
-            // Tạo chi tiết đơn hàng
-            List<ChiTietDonHang> danhSachChiTiet = new ArrayList<>();
-            for (ItemGioHang item : danhSachGioHang) {
-                ChiTietDonHang chiTiet = new ChiTietDonHang(
-                    (int) donHangId,
-                    item.getSanPham().getId(),
-                    item.getSoLuong(),
-                    item.getSanPham().getGia()
+        // Execute database operations in background thread
+        new Thread(() -> {
+            try {
+                // Lấy thông tin người dùng
+                SharedPreferences sharedPreferences = getContext().getSharedPreferences("QuanCaPhe", MODE_PRIVATE);
+                int nguoiDungId = sharedPreferences.getInt("nguoi_dung_id", -1);
+                
+                if (nguoiDungId == -1) {
+                    getActivity().runOnUiThread(() -> 
+                        Toast.makeText(getContext(), "Lỗi: Không tìm thấy thông tin người dùng", Toast.LENGTH_SHORT).show()
+                    );
+                    return;
+                }
+                
+                // Tạo đơn hàng take-away với banId và phieuPhucVuId null
+                DonHang donHang = new DonHang();
+                donHang.setNguoiDungId(nguoiDungId);
+                donHang.setBanId(null); // Null for take-away orders
+                donHang.setPhieuPhucVuId(null); // Null for orders without service ticket
+                donHang.setThoiGianDat(new Date());
+                donHang.setTongTien(tongTien);
+                donHang.setTrangThai("DANG_CHO");
+                
+                long donHangId = database.donHangDao().themDonHang(donHang);
+                
+                // Tạo chi tiết đơn hàng
+                List<ChiTietDonHang> danhSachChiTiet = new ArrayList<>();
+                for (ItemGioHang item : danhSachGioHang) {
+                    ChiTietDonHang chiTiet = new ChiTietDonHang(
+                        (int) donHangId,
+                        item.getSanPham().getId(),
+                        item.getSoLuong(),
+                        item.getSanPham().getGia()
+                    );
+                    danhSachChiTiet.add(chiTiet);
+                }
+                
+                database.chiTietDonHangDao().themDanhSachChiTiet(danhSachChiTiet);
+                
+                // Update UI on main thread
+                getActivity().runOnUiThread(() -> {
+                    // Xóa giỏ hàng
+                    danhSachGioHang.clear();
+                    capNhatGioHang();
+                    
+                    Toast.makeText(getContext(), "Đặt hàng thành công!", Toast.LENGTH_LONG).show();
+                });
+                
+            } catch (Exception e) {
+                getActivity().runOnUiThread(() -> 
+                    Toast.makeText(getContext(), "Lỗi khi đặt hàng: " + e.getMessage(), Toast.LENGTH_LONG).show()
                 );
-                danhSachChiTiet.add(chiTiet);
             }
-            
-            database.chiTietDonHangDao().themDanhSachChiTiet(danhSachChiTiet);
-            
-            // Xóa giỏ hàng
-            danhSachGioHang.clear();
-            capNhatGioHang();
-            
-            Toast.makeText(getContext(), "Đặt hàng thành công!", Toast.LENGTH_LONG).show();
-            
-        } catch (Exception e) {
-            Toast.makeText(getContext(), "Lỗi khi đặt hàng: " + e.getMessage(), Toast.LENGTH_LONG).show();
-        }
+        }).start();
     }
 }

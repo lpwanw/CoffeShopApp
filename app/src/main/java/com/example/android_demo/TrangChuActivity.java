@@ -20,6 +20,7 @@ import com.example.android_demo.fragment.QuanLySanPhamFragment;
 import com.example.android_demo.fragment.QuanLyNguoiDungFragment;
 import com.example.android_demo.fragment.SoDoBanFragment;
 import com.example.android_demo.fragment.QuanLyBanFragment;
+import com.example.android_demo.fragment.BaoCaoFragment;
 import com.google.android.material.navigation.NavigationView;
 
 public class TrangChuActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -132,6 +133,9 @@ public class TrangChuActivity extends AppCompatActivity implements NavigationVie
         } else if (itemId == R.id.nav_quan_ly_ban) {
             fragment = new QuanLyBanFragment();
             title = "Quản Lý Bàn";
+        } else if (itemId == R.id.nav_bao_cao) {
+            fragment = new BaoCaoFragment();
+            title = "Báo Cáo";
         } else if (itemId == R.id.nav_dang_xuat) {
             dangXuat();
             return true;

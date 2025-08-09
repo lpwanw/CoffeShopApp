@@ -80,23 +80,23 @@ public abstract class QuanCaPheDatabase extends RoomDatabase {
                     new DanhMucSanPham("Bánh Kẹo", "Bánh ngọt, bánh mặn và các loại kẹo"));
                 
                 // Tạo sản phẩm cà phê
-                INSTANCE.sanPhamDao().themSanPham(new SanPham("Cà Phê Đen", 25000, (int)danhMucCaPheId, "", "Cà phê đen truyền thống"));
-                INSTANCE.sanPhamDao().themSanPham(new SanPham("Cà Phê Sữa", 30000, (int)danhMucCaPheId, "", "Cà phê với sữa đặc"));
-                INSTANCE.sanPhamDao().themSanPham(new SanPham("Cappuccino", 45000, (int)danhMucCaPheId, "", "Cà phê Ý với bọt sữa"));
-                INSTANCE.sanPhamDao().themSanPham(new SanPham("Latte", 50000, (int)danhMucCaPheId, "", "Cà phê với nhiều sữa"));
-                INSTANCE.sanPhamDao().themSanPham(new SanPham("Americano", 35000, (int)danhMucCaPheId, "", "Cà phê pha loãng"));
+                INSTANCE.sanPhamDao().themSanPham(new SanPham("Cà Phê Đen", 25000, (int)danhMucCaPheId, "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400&h=400&fit=crop", "Cà phê đen truyền thống"));
+                INSTANCE.sanPhamDao().themSanPham(new SanPham("Cà Phê Sữa", 30000, (int)danhMucCaPheId, "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=400&h=400&fit=crop", "Cà phê với sữa đặc"));
+                INSTANCE.sanPhamDao().themSanPham(new SanPham("Cappuccino", 45000, (int)danhMucCaPheId, "https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=400&h=400&fit=crop", "Cà phê Ý với bọt sữa"));
+                INSTANCE.sanPhamDao().themSanPham(new SanPham("Latte", 50000, (int)danhMucCaPheId, "https://images.unsplash.com/photo-1561047029-3000c68339ca?w=400&h=400&fit=crop", "Cà phê với nhiều sữa"));
+                INSTANCE.sanPhamDao().themSanPham(new SanPham("Americano", 35000, (int)danhMucCaPheId, "https://images.unsplash.com/photo-1595981267035-7b04ca84a82d?w=400&h=400&fit=crop", "Cà phê pha loãng"));
                 
                 // Tạo sản phẩm trà
-                INSTANCE.sanPhamDao().themSanPham(new SanPham("Trà Đá", 15000, (int)danhMucTraId, "", "Trà đá truyền thống"));
-                INSTANCE.sanPhamDao().themSanPham(new SanPham("Trà Sữa Trân Châu", 40000, (int)danhMucTraId, "", "Trà sữa với trân châu"));
-                INSTANCE.sanPhamDao().themSanPham(new SanPham("Trà Xanh", 20000, (int)danhMucTraId, "", "Trá xanh thơm mát"));
-                INSTANCE.sanPhamDao().themSanPham(new SanPham("Trà Ô Long", 25000, (int)danhMucTraId, "", "Trá ô long cao cấp"));
+                INSTANCE.sanPhamDao().themSanPham(new SanPham("Trà Đá", 15000, (int)danhMucTraId, "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&h=400&fit=crop", "Trà đá truyền thống"));
+                INSTANCE.sanPhamDao().themSanPham(new SanPham("Trà Sữa Trân Châu", 40000, (int)danhMucTraId, "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=400&fit=crop", "Trà sữa với trân châu"));
+                INSTANCE.sanPhamDao().themSanPham(new SanPham("Trà Xanh", 20000, (int)danhMucTraId, "https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=400&h=400&fit=crop", "Trá xanh thơm mát"));
+                INSTANCE.sanPhamDao().themSanPham(new SanPham("Trà Ô Long", 25000, (int)danhMucTraId, "https://images.unsplash.com/photo-1597318881921-2c965600cdc7?w=400&h=400&fit=crop", "Trá ô long cao cấp"));
                 
                 // Tạo sản phẩm bánh kẹo
-                INSTANCE.sanPhamDao().themSanPham(new SanPham("Bánh Croissant", 35000, (int)danhMucBanhId, "", "Bánh sừng bò Pháp"));
-                INSTANCE.sanPhamDao().themSanPham(new SanPham("Bánh Tiramisu", 55000, (int)danhMucBanhId, "", "Bánh Tiramisu Ý"));
-                INSTANCE.sanPhamDao().themSanPham(new SanPham("Bánh Mì Sandwich", 40000, (int)danhMucBanhId, "", "Bánh mì sandwich thịt nguội"));
-                INSTANCE.sanPhamDao().themSanPham(new SanPham("Kẹo Dẻo", 10000, (int)danhMucBanhId, "", "Kẹo dẻo nhiều vị"));
+                INSTANCE.sanPhamDao().themSanPham(new SanPham("Bánh Croissant", 35000, (int)danhMucBanhId, "https://images.unsplash.com/photo-1555507036-ab794f77665e?w=400&h=400&fit=crop", "Bánh sừng bò Pháp"));
+                INSTANCE.sanPhamDao().themSanPham(new SanPham("Bánh Tiramisu", 55000, (int)danhMucBanhId, "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=400&h=400&fit=crop", "Bánh Tiramisu Ý"));
+                INSTANCE.sanPhamDao().themSanPham(new SanPham("Bánh Mì Sandwich", 40000, (int)danhMucBanhId, "https://images.unsplash.com/photo-1539252554453-80ab65ce3586?w=400&h=400&fit=crop", "Bánh mì sandwich thịt nguội"));
+                INSTANCE.sanPhamDao().themSanPham(new SanPham("Kẹo Dẻo", 10000, (int)danhMucBanhId, "https://images.unsplash.com/photo-1582058091505-f87a2e55a40f?w=400&h=400&fit=crop", "Kẹo dẻo nhiều vị"));
                 
                 // Đánh dấu một số sản phẩm hết hàng để test
                 INSTANCE.sanPhamDao().capNhatTinhTrangSanPham(4, false); // Latte hết hàng
@@ -146,3 +146,4 @@ public abstract class QuanCaPheDatabase extends RoomDatabase {
         }
     }
 }
+

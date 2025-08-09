@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import com.bumptech.glide.Glide;
 import com.example.android_demo.R;
 import com.example.android_demo.entity.SanPham;
 import java.io.File;
@@ -121,19 +122,21 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.SanPhamV
     private void loadImageIntoView(String imagePath, ImageView imageView) {
         if (!TextUtils.isEmpty(imagePath)) {
             if (imagePath.startsWith("http://") || imagePath.startsWith("https://")) {
-                // URL image - would need additional library like Glide or Picasso
-                // For now, show default image
-                imageView.setImageResource(R.drawable.ic_launcher_foreground);
+                // Load URL image using Glide
+                Glide.with(imageView.getContext())
+                    .load(imagePath)
+                    .placeholder(R.drawable.ic_launcher_foreground)
+                    .error(R.drawable.ic_launcher_foreground)
+                    .into(imageView);
             } else {
                 // Local file
                 File imgFile = new File(imagePath);
                 if (imgFile.exists()) {
-                    Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-                    if (bitmap != null) {
-                        imageView.setImageBitmap(bitmap);
-                    } else {
-                        imageView.setImageResource(R.drawable.ic_launcher_foreground);
-                    }
+                    Glide.with(imageView.getContext())
+                        .load(imgFile)
+                        .placeholder(R.drawable.ic_launcher_foreground)
+                        .error(R.drawable.ic_launcher_foreground)
+                        .into(imageView);
                 } else {
                     imageView.setImageResource(R.drawable.ic_launcher_foreground);
                 }

@@ -25,8 +25,8 @@ public class DonHang {
     private int id;
     
     private int nguoiDungId;
-    private int banId;
-    private int phieuPhucVuId;
+    private Integer banId; // Nullable for take-away orders
+    private Integer phieuPhucVuId; // Nullable for orders without service ticket
     private Date thoiGianDat;
     private double tongTien;
     private String trangThai; // "DANG_CHO", "DANG_CHE_BIEN", "HOAN_THANH", "HUY"
@@ -34,7 +34,7 @@ public class DonHang {
 
     public DonHang() {}
 
-    public DonHang(int nguoiDungId, int banId, int phieuPhucVuId, Date thoiGianDat, double tongTien, String trangThai) {
+    public DonHang(int nguoiDungId, Integer banId, Integer phieuPhucVuId, Date thoiGianDat, double tongTien, String trangThai) {
         this.nguoiDungId = nguoiDungId;
         this.banId = banId;
         this.phieuPhucVuId = phieuPhucVuId;
@@ -59,19 +59,19 @@ public class DonHang {
         this.nguoiDungId = nguoiDungId;
     }
 
-    public int getBanId() {
+    public Integer getBanId() {
         return banId;
     }
 
-    public void setBanId(int banId) {
+    public void setBanId(Integer banId) {
         this.banId = banId;
     }
 
-    public int getPhieuPhucVuId() {
+    public Integer getPhieuPhucVuId() {
         return phieuPhucVuId;
     }
 
-    public void setPhieuPhucVuId(int phieuPhucVuId) {
+    public void setPhieuPhucVuId(Integer phieuPhucVuId) {
         this.phieuPhucVuId = phieuPhucVuId;
     }
 

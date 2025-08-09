@@ -30,6 +30,7 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.bumptech.glide.Glide;
 import com.example.android_demo.R;
 import com.example.android_demo.adapter.SanPhamAdapter;
 import com.example.android_demo.database.QuanCaPheDatabase;
@@ -217,6 +218,11 @@ public class QuanLySanPhamFragment extends Fragment implements SanPhamAdapter.On
         AlertDialog dialog = new AlertDialog.Builder(getContext())
                 .setView(dialogView)
                 .create();
+        
+        // Set dialog window parameters to ensure proper sizing
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        }
         
         btnHuy.setOnClickListener(v -> dialog.dismiss());
         
@@ -449,15 +455,25 @@ public class QuanLySanPhamFragment extends Fragment implements SanPhamAdapter.On
     private void loadImageIntoPreview(String imagePath, ImageView imageView) {
         if (!TextUtils.isEmpty(imagePath)) {
             if (imagePath.startsWith("http://") || imagePath.startsWith("https://")) {
-                // URL image - would need additional library like Glide or Picasso
-                imageView.setImageResource(R.drawable.ic_launcher_foreground);
+                // Load URL image using Glide
+                Glide.with(this)
+                    .load(imagePath)
+                    .placeholder(R.drawable.ic_launcher_foreground)
+                    .error(R.drawable.ic_launcher_foreground)
+                    .into(imageView);
                 imageView.setVisibility(View.VISIBLE);
             } else {
                 // Local file
                 File imgFile = new File(imagePath);
                 if (imgFile.exists()) {
-                    Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-                    imageView.setImageBitmap(bitmap);
+                    Glide.with(this)
+                        .load(imgFile)
+                        .placeholder(R.drawable.ic_launcher_foreground)
+                        .error(R.drawable.ic_launcher_foreground)
+                        .into(imageView);
+                    imageView.setVisibility(View.VISIBLE);
+                } else {
+                    imageView.setImageResource(R.drawable.ic_launcher_foreground);
                     imageView.setVisibility(View.VISIBLE);
                 }
             }
