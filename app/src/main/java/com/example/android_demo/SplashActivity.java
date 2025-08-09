@@ -106,35 +106,13 @@ public class SplashActivity extends AppCompatActivity {
                 // Simulate some initialization work
                 Thread.sleep(1000);
                 
-                // Initialize database
+                // Initialize database - seed data will be created automatically
                 QuanCaPheDatabase database = QuanCaPheDatabase.layDatabase(this);
-                
-                // Create default data if needed
-                taoDuLieuMacDinh(database);
                 
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }).start();
-    }
-    
-    private void taoDuLieuMacDinh(QuanCaPheDatabase database) {
-        // Check if admin exists
-        if (database.nguoiDungDao().kiemTraTenDangNhap("admin") == null) {
-            // Create default admin account
-            database.nguoiDungDao().themNguoiDung(
-                new com.example.android_demo.entity.NguoiDung(
-                    "admin", "admin123", "ADMIN", "Quản trị viên", "admin@quancaphe.com"
-                )
-            );
-            
-            // Create sample employee account
-            database.nguoiDungDao().themNguoiDung(
-                new com.example.android_demo.entity.NguoiDung(
-                    "nhanvien1", "nv123", "NHAN_VIEN", "Nguyễn Văn An", "nhanvien1@quancaphe.com"
-                )
-            );
-        }
     }
     
     private void chuyenDenManHinhChinh() {

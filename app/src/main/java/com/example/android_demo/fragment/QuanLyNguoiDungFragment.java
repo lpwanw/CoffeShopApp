@@ -218,6 +218,8 @@ public class QuanLyNguoiDungFragment extends Fragment implements NguoiDungAdapte
                     taiDanhSachNguoiDung();
                     dialog.dismiss();
                     
+                } catch (android.database.sqlite.SQLiteConstraintException e) {
+                    Toast.makeText(getContext(), "Tên đăng nhập đã tồn tại trong hệ thống", Toast.LENGTH_LONG).show();
                 } catch (Exception e) {
                     Toast.makeText(getContext(), "Lỗi: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 }

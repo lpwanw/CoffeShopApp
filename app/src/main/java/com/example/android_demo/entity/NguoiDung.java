@@ -1,9 +1,11 @@
 package com.example.android_demo.entity;
 
 import androidx.room.Entity;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "nguoi_dung")
+@Entity(tableName = "nguoi_dung", 
+        indices = {@Index(value = {"tenDangNhap"}, unique = true)})
 public class NguoiDung {
     @PrimaryKey(autoGenerate = true)
     private int id;
