@@ -20,15 +20,21 @@
         android:theme="@style/Theme.AndroidDemo"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".DangNhapActivity"
+            android:name=".SplashActivity"
             android:exported="true"
-            android:label="Quynh Coffe App"
+            android:label="Quynh Coffee App"
             android:theme="@style/Theme.Material3.DayNight.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        <activity
+            android:name=".DangNhapActivity"
+            android:exported="false"
+            android:label="Đăng nhập"
+            android:theme="@style/Theme.Material3.DayNight.NoActionBar" />
         
         <activity
             android:name=".TrangChuActivity"

@@ -38,9 +38,6 @@ public class DangNhapActivity extends AppCompatActivity {
     private void khoiTaoDatabase() {
         database = QuanCaPheDatabase.layDatabase(this);
         sharedPreferences = getSharedPreferences("QuanCaPhe", MODE_PRIVATE);
-        
-        // Tạo tài khoản admin mặc định nếu chưa có
-        taoDuLieuMacDinh();
     }
     
     private void kiemTraDangNhap() {
@@ -92,17 +89,4 @@ public class DangNhapActivity extends AppCompatActivity {
         finish();
     }
     
-    private void taoDuLieuMacDinh() {
-        // Kiểm tra nếu đã có admin
-        NguoiDung admin = database.nguoiDungDao().kiemTraTenDangNhap("admin");
-        if (admin == null) {
-            // Tạo tài khoản admin mặc định
-            NguoiDung adminMoi = new NguoiDung("admin", "admin123", "ADMIN", "Quản trị viên", "admin@quancaphe.com");
-            database.nguoiDungDao().themNguoiDung(adminMoi);
-            
-            // Tạo tài khoản nhân viên mẫu
-            NguoiDung nhanVien = new NguoiDung("nhanvien1", "nv123", "NHAN_VIEN", "Nguyễn Văn An", "nhanvien1@quancaphe.com");
-            database.nguoiDungDao().themNguoiDung(nhanVien);
-        }
-    }
 }
