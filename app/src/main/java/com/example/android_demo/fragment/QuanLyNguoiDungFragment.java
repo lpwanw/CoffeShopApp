@@ -2,11 +2,17 @@ package com.example.android_demo.fragment;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.google.android.material.textfield.TextInputEditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -95,13 +101,11 @@ public class QuanLyNguoiDungFragment extends Fragment implements NguoiDungAdapte
     }
     
     private void hienThiDialogThemNguoiDung() {
-        // TODO: Tạo dialog để thêm người dùng mới
-        Toast.makeText(getContext(), "Chức năng thêm người dùng sẽ được phát triển", Toast.LENGTH_SHORT).show();
+        hienThiDialogNguoiDung(null, "Thêm người dùng");
     }
     
     private void hienThiDialogSuaNguoiDung(NguoiDung nguoiDung) {
-        // TODO: Tạo dialog để sửa thông tin người dùng
-        Toast.makeText(getContext(), "Chức năng sửa người dùng sẽ được phát triển", Toast.LENGTH_SHORT).show();
+        hienThiDialogNguoiDung(nguoiDung, "Sửa thông tin người dùng");
     }
     
     private void hienThiDialogChiTietNguoiDung(NguoiDung nguoiDung) {
@@ -142,5 +146,126 @@ public class QuanLyNguoiDungFragment extends Fragment implements NguoiDungAdapte
                 })
                 .setNegativeButton("Hủy", null)
                 .show();
+    }
+    
+    private void hienThiDialogNguoiDung(NguoiDung nguoiDung, String tieuDe) {
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_them_sua_nguoi_dung, null);
+        
+        TextView tvTieuDe = dialogView.findViewById(R.id.tvTieuDe);
+        TextInputEditText etTenDangNhap = dialogView.findViewById(R.id.etTenDangNhap);
+        TextInputEditText etMatKhau = dialogView.findViewById(R.id.etMatKhau);
+        TextInputEditText etHoTen = dialogView.findViewById(R.id.etHoTen);
+        TextInputEditText etEmail = dialogView.findViewById(R.id.etEmail);
+        Spinner spVaiTro = dialogView.findViewById(R.id.spVaiTro);
+        Button btnLuu = dialogView.findViewById(R.id.btnLuu);
+        Button btnHuy = dialogView.findViewById(R.id.btnHuy);
+        
+        tvTieuDe.setText(tieuDe);
+        
+        String[] vaiTroArray = {"NHAN_VIEN", "ADMIN"};
+        String[] vaiTroDisplayArray = {"Nhân viên", "Quản trị viên"};
+        ArrayAdapter<String> vaiTroAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, vaiTroDisplayArray);
+        vaiTroAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spVaiTro.setAdapter(vaiTroAdapter);
+        
+        boolean isEdit = nguoiDung != null;
+        
+        if (isEdit) {
+            etTenDangNhap.setText(nguoiDung.getTenDangNhap());
+            etMatKhau.setText(nguoiDung.getMatKhau());
+            etHoTen.setText(nguoiDung.getHoTen());
+            etEmail.setText(nguoiDung.getEmail());
+            
+            for (int i = 0; i < vaiTroArray.length; i++) {
+                if (vaiTroArray[i].equals(nguoiDung.getVaiTro())) {
+                    spVaiTro.setSelection(i);
+                    break;
+                }
+            }
+        }
+        
+        AlertDialog dialog = new AlertDialog.Builder(getContext())
+                .setView(dialogView)
+                .setCancelable(false)
+                .create();
+        
+        btnHuy.setOnClickListener(v -> dialog.dismiss());
+        
+        btnLuu.setOnClickListener(v -> {
+            String tenDangNhap = etTenDangNhap.getText().toString().trim();
+            String matKhau = etMatKhau.getText().toString().trim();
+            String hoTen = etHoTen.getText().toString().trim();
+            String email = etEmail.getText().toString().trim();
+            String vaiTro = vaiTroArray[spVaiTro.getSelectedItemPosition()];
+            
+            if (kiemTraThongTin(tenDangNhap, matKhau, hoTen, email, isEdit ? nguoiDung.getTenDangNhap() : null)) {
+                try {
+                    if (isEdit) {
+                        nguoiDung.setTenDangNhap(tenDangNhap);
+                        nguoiDung.setMatKhau(matKhau);
+                        nguoiDung.setHoTen(hoTen);
+                        nguoiDung.setEmail(email);
+                        nguoiDung.setVaiTro(vaiTro);
+                        
+                        database.nguoiDungDao().capNhatNguoiDung(nguoiDung);
+                        Toast.makeText(getContext(), "Đã cập nhật thông tin người dùng", Toast.LENGTH_SHORT).show();
+                    } else {
+                        NguoiDung nguoiDungMoi = new NguoiDung(tenDangNhap, matKhau, vaiTro, hoTen, email);
+                        database.nguoiDungDao().themNguoiDung(nguoiDungMoi);
+                        Toast.makeText(getContext(), "Đã thêm người dùng mới", Toast.LENGTH_SHORT).show();
+                    }
+                    
+                    taiDanhSachNguoiDung();
+                    dialog.dismiss();
+                    
+                } catch (Exception e) {
+                    Toast.makeText(getContext(), "Lỗi: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        
+        dialog.show();
+    }
+    
+    private boolean kiemTraThongTin(String tenDangNhap, String matKhau, String hoTen, String email, String tenDangNhapCu) {
+        if (TextUtils.isEmpty(tenDangNhap)) {
+            Toast.makeText(getContext(), "Vui lòng nhập tên đăng nhập", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        
+        if (TextUtils.isEmpty(matKhau)) {
+            Toast.makeText(getContext(), "Vui lòng nhập mật khẩu", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        
+        if (matKhau.length() < 4) {
+            Toast.makeText(getContext(), "Mật khẩu phải có ít nhất 4 ký tự", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        
+        if (TextUtils.isEmpty(hoTen)) {
+            Toast.makeText(getContext(), "Vui lòng nhập họ và tên", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        
+        if (TextUtils.isEmpty(email)) {
+            Toast.makeText(getContext(), "Vui lòng nhập email", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            Toast.makeText(getContext(), "Email không hợp lệ", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        
+        if (tenDangNhapCu == null || !tenDangNhap.equals(tenDangNhapCu)) {
+            NguoiDung nguoiDungTonTai = database.nguoiDungDao().kiemTraTenDangNhap(tenDangNhap);
+            if (nguoiDungTonTai != null) {
+                Toast.makeText(getContext(), "Tên đăng nhập đã tồn tại", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        }
+        
+        return true;
     }
 }
